@@ -29,7 +29,7 @@ def load_agg():
 
 monthly_total, monthly_type, sample_points = load_agg()
 
-# ---- Sidebar filters ----
+# Sidebar filters
 st.sidebar.header("Filters")
 
 min_date = sample_points["date"].min().date()
@@ -55,14 +55,11 @@ if isinstance(date_range, tuple) and len(date_range) == 2:
 else:
     start, end = min_date, max_date
 
-# --- Map data: sampled points (fast) ---
 mask_map = (sample_points["date"].dt.date >= start) & (sample_points["date"].dt.date <= end)
 if selected_types:
     mask_map &= sample_points["primary_type"].isin(selected_types)
 map_df = sample_points.loc[mask_map].copy()
 
-# --- Trend data: aggregated by month (fast) ---
-# if types selected, build monthly series from monthly_type; otherwise use monthly_total
 month_start = pd.to_datetime(pd.Timestamp(start).to_period("M").start_time)
 month_end = pd.to_datetime(pd.Timestamp(end).to_period("M").start_time)
 
@@ -74,18 +71,18 @@ else:
     mt = monthly_total[(monthly_total["month"] >= month_start) & (monthly_total["month"] <= month_end)]
     trend_df = mt.copy()
 
-# --- Top types (date-filtered, NOT constrained by selected_types by default) ---
+# Top types (date-filtered, NOT constrained by selected_types by default)
 mtt_all = monthly_type[(monthly_type["month"] >= month_start) & (monthly_type["month"] <= month_end)]
 top_types = (mtt_all.groupby("primary_type", as_index=False)["count"].sum()
              .sort_values("count", ascending=False)
              .head(10))
 
-# --- Summary counts ---
+#Summary counts
 total_in_range = int(monthly_total[(monthly_total["month"] >= month_start) & (monthly_total["month"] <= month_end)]["count"].sum())
 total_selected_types = int(mtt_all[mtt_all["primary_type"].isin(selected_types)].groupby("primary_type")["count"].sum().sum()) if selected_types else total_in_range
 
-# ---- Page ----
-st.title("Chicago Crimes (2015–2024) — Interactive EDA Dashboard (Pre-aggregated)")
+# Page
+st.title("Chicago Crimes (2015–2024) — Interactive EDA Dashboard")
 
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Total crimes (date range)", f"{total_in_range:,}")
@@ -123,7 +120,7 @@ with right:
     if trend_df.empty:
         st.warning("No trend data for current filters.")
     else:
-        fig_line = px.line(trend_df, x="month", y="count", title="Monthly crime counts (fast, aggregated)")
+        fig_line = px.line(trend_df, x="month", y="count", title="Monthly crime counts")
         st.plotly_chart(fig_line, use_container_width=True)
 
     st.subheader("Top crime types (date-filtered)")
