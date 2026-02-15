@@ -1,0 +1,11 @@
+pandas
+numpy
+requests
+pyarrow
+matplotlib
+seaborn
+scikit-learn
+streamlit
+plotly
+jupyterlab
+ipykernel
