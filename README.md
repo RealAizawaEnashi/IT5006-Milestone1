@@ -192,7 +192,7 @@ And of course you can access to the dashboard via link `milestoneone.hoshinostud
 
 # Author
 
-Team21
+Team21\
 LIN YIHAN\
 XU QIAOYANG\
 QI RUIXUAN
