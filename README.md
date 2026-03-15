@@ -20,14 +20,9 @@ project-root/
 │	└── NIBRS_incident.csv
 │	└── NIBRS_OFFENSE.csv
 │	└── NIBRS_OFFENSE_TYPE.csv
+│
 ├── notebooks/            # Jupyter notebooks
-│   └── Milestone2_Team21.ipynb
-│
-├── src/                  
-│
-├── docs/                 
-│
-├── deployment/           
+│   └── Milestone2_Team21.ipynb       
 │
 ├── requirements.txt      # Python dependencies
 │
